@@ -94,6 +94,28 @@ also appears in a **to-be-removed** list, and saves the result next to the sourc
 Next time you open the page it reopens the last source folder (the browser may ask you to
 confirm access with one click). Untick **.txt only** to see every file.
 
+The **Start folder** box (default `E:\SearchInProgress`) is copied to the clipboard when you click
+**Choose folder…**, so you can paste it with Ctrl+V into the Windows dialog's Folder box. Browsers
+do not let a page fill that box itself. Edit the box to change the path; the page remembers it.
+
+## Windows 7 / Internet Explorer: `RemoveDupNumbers.hta`
+
+Internet Explorer cannot run `RemoveDupNumbers.html`: it has no folder access for web pages and
+does not understand the page's modern JavaScript, so allowing its blocked content does not help.
+`RemoveDupNumbers.hta` is the same tool as a Windows HTML Application. It runs with the
+`mshta.exe` built into every Windows version from XP to 11, needs no browser, and reads and
+writes files directly.
+
+1. Download `RemoveDupNumbers.hta` and double-click it. If Windows warns about a downloaded file,
+   right-click it, choose **Properties**, tick **Unblock** (or click **Unblock**), then **OK**.
+2. The source folder box starts at the last folder you used, or `E:\SearchInProgress` the first
+   time. Type or paste any path and press Enter, or use **Up** and **Browse...**. Double-click a
+   `[folder]` to open it and click a file to select it.
+3. Pick the to-be-removed file (it starts in the source folder) and click **Start**. The result is
+   saved beside the source with the same name and rules as the web page.
+
+The last folder is remembered in the registry under `HKCU\Software\RemoveDupNumbers`.
+
 ## Rules
 
 - One entry per line; Windows (CRLF) and Linux (LF) line endings both work, blank lines are ignored.
@@ -116,5 +138,5 @@ http://localhost:8000/RemoveDupNumbers.html (or `/PatCopyPrint.html`).
 
 ## Remove Dup Numbers tests
 
-`node test.js` checks the sorting and removal logic. `node test.js SOURCE.txt REMOVE.txt`
+`node test.js` checks the sorting and removal logic in both the page and the `.hta`. `node test.js SOURCE.txt REMOVE.txt`
 also prints a summary for two real files.
