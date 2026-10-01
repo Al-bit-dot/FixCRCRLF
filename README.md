@@ -80,7 +80,35 @@ A single web page, `RemoveDupNumbers.html`, that removes from a **source** list 
 also appears in a **to-be-removed** list, and saves the result next to the source as
 `<source>-w-o-<removed>.txt`. It runs locally in your browser; no files leave your computer.
 
-## Use it
+## Standalone program (recommended): Windows 7–11 and Linux
+
+`remove_dup_numbers.py` is packaged into one program per system, so the computer running it does
+not need Python or a browser. Download it from the
+[latest release](https://github.com/Al-bit-dot/123/releases/tag/latest):
+
+- **Windows:** `RemoveDupNumbers-windows.zip`. Right-click it, choose **Extract All**, then
+  double-click `RemoveDupNumbers.exe`. The first time, Windows may warn about an unrecognised app:
+  click **More info**, then **Run anyway**. One 32-bit program runs on Windows 7 through 11
+  (the Microsoft C runtime that Windows 7 lacks is bundled inside the program).
+- **Linux:** `RemoveDupNumbers-linux.tar.gz`. Extract it and run `./RemoveDupNumbers`
+  (built on Ubuntu 22.04; runs on that and newer distributions). For a menu entry and desktop
+  icon, run `bash install-shortcut.sh` from the extracted folder: it copies the program to
+  `~/Programs` and adds both. On Ubuntu/GNOME, if the desktop icon will not start, right-click it
+  and choose **Allow Launching**.
+
+The window works like the `.hta` below: a folder box you can type or paste into, **Go**, **Up**,
+**Browse...**, double-click a `[folder]` to open it, click a file to select it, then **Start**.
+It opens at the last source folder used, or `E:\SearchInProgress` on Windows the first time
+(your home folder on Linux). That folder is kept in `%APPDATA%\RemoveDupNumbers\settings.json`
+on Windows and `~/.config/RemoveDupNumbers/settings.json` on Linux.
+
+It also works from a terminal: `RemoveDupNumbers SOURCE.txt REMOVE.txt`. With Python 3.8 or newer
+installed you can run `python3 remove_dup_numbers.py` directly instead.
+
+GitHub builds both programs on every pull request and publishes them to the `latest` release on
+every change to `main` (see `.github/workflows/build.yml`).
+
+## Web page
 
 1. Download `RemoveDupNumbers.html` and open it in **Chrome or Edge** (Windows or Linux).
 2. Under **Source file**, click **Choose folder…**, pick the folder, and allow access.
@@ -91,8 +119,31 @@ also appears in a **to-be-removed** list, and saves the result next to the sourc
    `E04D1507-order.txt` + `Squeegee_Order1.txt` → `E04D1507-order-w-o-Squeegee_Order1.txt`.
    If that file already exists you are asked before it is replaced.
 
-Next time you open the page it reopens the last source folder (the browser may ask you to
-confirm access with one click). Untick **.txt only** to see every file.
+The page tries to reopen the last source folder next time, but browsers do not always allow it
+(for example Edge on Windows 11 when the page is opened from disk); the standalone program
+always does. Untick **.txt only** to see every file.
+
+The **Start folder** box (default `E:\SearchInProgress`) is copied to the clipboard when you click
+**Choose folder…**, so you can paste it with Ctrl+V into the Windows dialog's Folder box. Browsers
+do not let a page fill that box itself. Edit the box to change the path; the page remembers it.
+
+## Windows 7 / Internet Explorer: `RemoveDupNumbers.hta`
+
+Internet Explorer cannot run `RemoveDupNumbers.html`: it has no folder access for web pages and
+does not understand the page's modern JavaScript, so allowing its blocked content does not help.
+`RemoveDupNumbers.hta` is the same tool as a Windows HTML Application. It runs with the
+`mshta.exe` built into every Windows version from XP to 11, needs no browser, and reads and
+writes files directly.
+
+1. Download `RemoveDupNumbers.hta` and double-click it. If Windows warns about a downloaded file,
+   right-click it, choose **Properties**, tick **Unblock** (or click **Unblock**), then **OK**.
+2. The source folder box starts at the last folder you used, or `E:\SearchInProgress` the first
+   time. Type or paste any path and press Enter, or use **Up** and **Browse...**. Double-click a
+   `[folder]` to open it and click a file to select it.
+3. Pick the to-be-removed file (it starts in the source folder) and click **Start**. The result is
+   saved beside the source with the same name and rules as the web page.
+
+The last folder is remembered in the registry under `HKCU\Software\RemoveDupNumbers`.
 
 ## Rules
 
@@ -116,5 +167,6 @@ http://localhost:8000/RemoveDupNumbers.html (or `/PatCopyPrint.html`).
 
 ## Remove Dup Numbers tests
 
-`node test.js` checks the sorting and removal logic. `node test.js SOURCE.txt REMOVE.txt`
+`node test.js` checks the sorting and removal logic in both the page and the `.hta`.
+`python3 test_remove_dup_numbers.py` runs the same checks on the standalone program. `node test.js SOURCE.txt REMOVE.txt`
 also prints a summary for two real files.
