@@ -89,7 +89,7 @@ not need Python or a browser. Download it from the
 - **Windows:** `RemoveDupNumbers-windows.zip`. Right-click it, choose **Extract All**, then
   double-click `RemoveDupNumbers.exe`. The first time, Windows may warn about an unrecognised app:
   click **More info**, then **Run anyway**. One 32-bit program runs on Windows 7 through 11
-  (Windows 7 needs its usual updates installed, including KB2533623).
+  (the Microsoft C runtime that Windows 7 lacks is bundled inside the program).
 - **Linux:** `RemoveDupNumbers-linux.tar.gz`. Extract it and run `./RemoveDupNumbers`
   (built on Ubuntu 22.04; runs on that and newer distributions). For a menu entry and desktop
   icon, run `bash install-shortcut.sh` from the extracted folder: it copies the program to
