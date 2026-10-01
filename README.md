@@ -91,7 +91,10 @@ not need Python or a browser. Download it from the
   click **More info**, then **Run anyway**. One 32-bit program runs on Windows 7 through 11
   (Windows 7 needs its usual updates installed, including KB2533623).
 - **Linux:** `RemoveDupNumbers-linux.tar.gz`. Extract it and run `./RemoveDupNumbers`
-  (built on Ubuntu 22.04; runs on that and newer distributions).
+  (built on Ubuntu 22.04; runs on that and newer distributions). For a menu entry and desktop
+  icon, run `bash install-shortcut.sh` from the extracted folder: it copies the program to
+  `~/Programs` and adds both. On Ubuntu/GNOME, if the desktop icon will not start, right-click it
+  and choose **Allow Launching**.
 
 The window works like the `.hta` below: a folder box you can type or paste into, **Go**, **Up**,
 **Browse...**, double-click a `[folder]` to open it, click a file to select it, then **Start**.
