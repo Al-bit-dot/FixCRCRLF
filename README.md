@@ -166,9 +166,11 @@ sudo dpkg -i blt_2.5.3-4_amd64.deb python3-tk_3.4.2-1_amd64.deb
 ```
 
 **Fedora** (any current release) runs the packaged program as is, so nothing needs installing.
-If you prefer the script there, Fedora Workstation ships `zenity` but not tkinter; on a connected
-Fedora of the same release, `dnf download --resolve python3-tkinter` fetches the `.rpm` files to
-copy over and install with `sudo dnf install ./*.rpm`.
+Running the script there instead needs tkinter or `zenity`, and Fedora Workstation installs
+neither by default. Fedora's tkinter package must match the installed Python exactly, so use a
+connected Fedora of the same release and update level (`rpm -q python3` prints the same on both),
+run `dnf download --resolve python3-tkinter tk tcl` there, copy the `.rpm` files over, and run
+`sudo dnf install ./*.rpm` (add `--disablerepo='*'` if it complains about reaching repositories).
 
 ## Web page
 
