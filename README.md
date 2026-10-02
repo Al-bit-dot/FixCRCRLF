@@ -89,12 +89,18 @@ not need Python or a browser. Download it from the
 - **Windows:** `RemoveDupNumbers-windows.zip`. Right-click it, choose **Extract All**, then
   double-click `RemoveDupNumbers.exe`. The first time, Windows may warn about an unrecognised app:
   click **More info**, then **Run anyway**. One 32-bit program runs on Windows 7 through 11
-  (the Microsoft C runtime that Windows 7 lacks is bundled inside the program).
-- **Linux:** `RemoveDupNumbers-linux.tar.gz`. Extract it and run `./RemoveDupNumbers`
-  (built on Ubuntu 22.04; runs on that and newer distributions). For a menu entry and desktop
-  icon, run `bash install-shortcut.sh` from the extracted folder: it copies the program to
-  `~/Programs` and adds both. On Ubuntu/GNOME, if the desktop icon will not start, right-click it
-  and choose **Allow Launching**.
+  (the Microsoft C runtime that Windows 7 lacks is bundled inside the program). The zip also
+  holds `remove_dup_numbers.py` and `RemoveDupNumbers.pyw` for a Windows that has Python
+  installed (see [Installing Python offline](#installing-python-offline-on-windows)): double-click
+  the `.pyw` to open the window without a console.
+- **Linux:** `RemoveDupNumbers-linux.tar.gz`. Extract it and run `bash install-shortcut.sh` from
+  the extracted folder. It copies the files to `~/Programs` and adds a menu entry and a desktop
+  icon that run the packaged `RemoveDupNumbers` program when it starts on that computer (it was
+  built on Ubuntu 22.04 and needs that C library or newer, so Fedora and current Ubuntu are fine),
+  and otherwise the `remove_dup_numbers.py` script with the system `python3` (Python 3.4 or
+  newer, so Ubuntu 14.10 works). The script opens the same window when Python has tkinter; without
+  it, it uses file dialogs from `zenity` or `kdialog`, which GNOME, Unity and KDE desktops ship.
+  On newer GNOME, if the desktop icon will not start, right-click it and choose **Allow Launching**.
 
 The window works like the `.hta` below: a folder box you can type or paste into, **Go**, **Up**,
 **Browse...**, double-click a `[folder]` to open it, click a file to select it, then **Start**.
