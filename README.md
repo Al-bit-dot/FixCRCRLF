@@ -210,12 +210,19 @@ The last folder is remembered in the registry under `HKCU\Software\RemoveDupNumb
 
 ## Rules
 
+These rules apply to all three versions (standalone program, web page and `.hta`).
+
 - One entry per line; Windows (CRLF) and Linux (LF) line endings both work, blank lines are ignored.
+- **Both files are sorted first.** Each list is sorted by numeric value, lowest first (leading
+  zeros ignored), with entries that are not plain numbers after the numbers in alphabetical order.
+  Only then is the to-be-removed list applied to the source list, so the order of the lines in
+  your files does not matter, and the saved result is in that sorted order. The two files you
+  picked are never changed.
 - Numbers are compared by value, so `02847689` matches `2847689`. The saved file keeps the
   source's original spelling (leading zeros stay) and its line-ending style.
-- The result is sorted by numeric value, lowest first. Entries that are not plain numbers
-  (like `H000982`) are kept and listed at the end; they are removed only if the removal file
-  contains exactly the same text.
+- Entries that are not plain numbers (like `H000982`) are kept and listed at the end; they are
+  removed only if the removal file contains exactly the same text. Repeated entries in the
+  source are not merged: a number that appears twice stays twice unless it is in the removal list.
 - After a run, **Show result details** lists what was removed and which removal entries were
   not in the source.
 
