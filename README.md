@@ -89,8 +89,7 @@ not need Python or a browser. Download it from the
 - **Windows:** `RemoveDupNumbers-windows.zip`. Right-click it, choose **Extract All**, then
   double-click `RemoveDupNumbers.exe`. The first time, Windows may warn about an unrecognised app:
   click **More info**, then **Run anyway**. One 32-bit program runs on Windows 7 through 11: it
-  carries its own Python (3.7, which needs no Windows updates) and the Microsoft C runtime that
-  Windows 7 lacks. The zip also
+  carries its own Python and the Microsoft C runtime that Windows 7 lacks. The zip also
   holds `remove_dup_numbers.py` and `RemoveDupNumbers.pyw` for a Windows that has Python
   installed (see [Installing Python offline](#installing-python-offline-on-windows)): double-click
   the `.pyw` to open the window without a console.
