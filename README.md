@@ -88,13 +88,19 @@ not need Python or a browser. Download it from the
 
 - **Windows:** `RemoveDupNumbers-windows.zip`. Right-click it, choose **Extract All**, then
   double-click `RemoveDupNumbers.exe`. The first time, Windows may warn about an unrecognised app:
-  click **More info**, then **Run anyway**. One 32-bit program runs on Windows 7 through 11
-  (the Microsoft C runtime that Windows 7 lacks is bundled inside the program).
-- **Linux:** `RemoveDupNumbers-linux.tar.gz`. Extract it and run `./RemoveDupNumbers`
-  (built on Ubuntu 22.04; runs on that and newer distributions). For a menu entry and desktop
-  icon, run `bash install-shortcut.sh` from the extracted folder: it copies the program to
-  `~/Programs` and adds both. On Ubuntu/GNOME, if the desktop icon will not start, right-click it
-  and choose **Allow Launching**.
+  click **More info**, then **Run anyway**. One 32-bit program runs on Windows 7 through 11: it
+  carries its own Python and the Microsoft C runtime that Windows 7 lacks. The zip also
+  holds `remove_dup_numbers.py` and `RemoveDupNumbers.pyw` for a Windows that has Python
+  installed (see [Installing Python offline](#installing-python-offline-on-windows)): double-click
+  the `.pyw` to open the window without a console.
+- **Linux:** `RemoveDupNumbers-linux.tar.gz`. Extract it and run `bash install-shortcut.sh` from
+  the extracted folder. It copies the files to `~/Programs` and adds a menu entry and a desktop
+  icon that run the packaged `RemoveDupNumbers` program when it starts on that computer (it was
+  built on Ubuntu 22.04 and needs that C library or newer, so Fedora and current Ubuntu are fine),
+  and otherwise the `remove_dup_numbers.py` script with the system `python3` (Python 3.4 or
+  newer, so Ubuntu 14.10 works). The script opens the same window when Python has tkinter; without
+  it, it uses file dialogs from `zenity` or `kdialog`, which GNOME, Unity and KDE desktops ship.
+  On newer GNOME, if the desktop icon will not start, right-click it and choose **Allow Launching**.
 
 The window works like the `.hta` below: a folder box you can type or paste into, **Go**, **Up**,
 **Browse...**, double-click a `[folder]` to open it, click a file to select it, then **Start**.
@@ -102,11 +108,68 @@ It opens at the last source folder used, or `E:\SearchInProgress` on Windows the
 (your home folder on Linux). That folder is kept in `%APPDATA%\RemoveDupNumbers\settings.json`
 on Windows and `~/.config/RemoveDupNumbers/settings.json` on Linux.
 
-It also works from a terminal: `RemoveDupNumbers SOURCE.txt REMOVE.txt`. With Python 3.8 or newer
-installed you can run `python3 remove_dup_numbers.py` directly instead.
+It also works from a terminal: `RemoveDupNumbers SOURCE.txt REMOVE.txt`. With Python 3.4 or newer
+installed you can run `python3 remove_dup_numbers.py` directly instead (`python remove_dup_numbers.py`
+on Windows); it needs nothing outside Python's own library.
 
 GitHub builds both programs on every pull request and publishes them to the `latest` release on
 every change to `main` (see `.github/workflows/build.yml`).
+
+## Installing Python offline on Windows
+
+Python is only needed on Windows to run `remove_dup_numbers.py` itself; `RemoveDupNumbers.exe`
+carries its own. Python's official installers do not need an internet connection, so one file
+downloaded on a connected computer and carried over on a USB stick is enough. Pick one:
+
+| Download on a connected computer | For |
+|---|---|
+| [python-3.8.10.exe](https://www.python.org/ftp/python/3.8.10/python-3.8.10.exe) (32-bit, runs on any Windows) or [python-3.8.10-amd64.exe](https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe) (64-bit Windows only) | Windows 11; Windows 7 SP1 that has update KB2533623 |
+| [python-3.7.6.exe](https://www.python.org/ftp/python/3.7.6/python-3.7.6.exe) or [python-3.7.6-amd64.exe](https://www.python.org/ftp/python/3.7.6/python-3.7.6-amd64.exe) | Windows 7 SP1 without that update (also fine on Windows 11) |
+
+1. Copy the installer over and double-click it. Click **Install Now** (tick **Add Python to PATH**
+   first if you want `python` to work in a command prompt). Nothing is downloaded: the file holds
+   Python, tkinter for the window, and the Microsoft C runtime that Windows 7 lacks, which it
+   installs by itself.
+2. On Windows 7, if the installer stops with *Windows 7 Service Pack 1 and all applicable updates
+   are required*, the computer lacks update KB2533623 (every Python from 3.7.7 on checks for it).
+   Either install that update first (an `.msu` file from the Microsoft Update Catalog; search for
+   KB2533623, or for KB3063858, which replaced it) or use the 3.7.6 installer, which has no such check.
+   Windows 7 without Service Pack 1 cannot install any of them.
+3. Extract `RemoveDupNumbers-windows.zip` and double-click `RemoveDupNumbers.pyw`. It opens the
+   same window as the `.exe`, without a console. The settings file is shared with the `.exe`.
+
+Do not use the *Windows installer (web)* downloads (`...-webinstall.exe`): they fetch everything
+they install from the internet. Do not use the *embeddable package* zips: they have no tkinter.
+Python 3.9 and newer do not install on Windows 7 at all. The site needs no sign-in, and the files
+are the same whether downloaded on Windows or Linux.
+
+## Linux without the packaged program
+
+`install-shortcut.sh` says so when the packaged program cannot start on a computer (it needs the C
+library of Ubuntu 22.04 or newer; Ubuntu 14.10 has an older one) and points the shortcut at
+`remove_dup_numbers.py` run by the system `python3` instead. The script needs only Python 3.4 or
+newer. For the window it uses Python's tkinter when that is installed, and otherwise the desktop's
+own file dialogs (`zenity` on GNOME and Unity, `kdialog` on KDE), which ask for the source file,
+then the to-be-removed file, and show the result. Without either it still works from a terminal:
+`python3 ~/Programs/remove_dup_numbers.py SOURCE.txt REMOVE.txt`.
+
+**Ubuntu 14.10** installs Python 3.4.2 and `zenity` but not tkinter, so the dialogs are used
+unless you add tkinter. For that, download these two packages on a connected computer (they are
+for 64-bit Ubuntu; for 32-bit replace `amd64` with `i386` in both names), copy them over, and
+install both in one command:
+
+```
+https://old-releases.ubuntu.com/ubuntu/pool/main/b/blt/blt_2.5.3-4_amd64.deb
+https://old-releases.ubuntu.com/ubuntu/pool/main/p/python3-stdlib-extensions/python3-tk_3.4.2-1_amd64.deb
+sudo dpkg -i blt_2.5.3-4_amd64.deb python3-tk_3.4.2-1_amd64.deb
+```
+
+**Fedora** (any current release) runs the packaged program as is, so nothing needs installing.
+Running the script there instead needs tkinter or `zenity`, and Fedora Workstation installs
+neither by default. Fedora's tkinter package must match the installed Python exactly, so use a
+connected Fedora of the same release and update level (`rpm -q python3` prints the same on both),
+run `dnf download --resolve python3-tkinter tk tcl` there, copy the `.rpm` files over, and run
+`sudo dnf install ./*.rpm` (add `--disablerepo='*'` if it complains about reaching repositories).
 
 ## Web page
 
@@ -147,12 +210,19 @@ The last folder is remembered in the registry under `HKCU\Software\RemoveDupNumb
 
 ## Rules
 
+These rules apply to all three versions (standalone program, web page and `.hta`).
+
 - One entry per line; Windows (CRLF) and Linux (LF) line endings both work, blank lines are ignored.
+- **Both files are sorted first.** Each list is sorted by numeric value, lowest first (leading
+  zeros ignored), with entries that are not plain numbers after the numbers in alphabetical order.
+  Only then is the to-be-removed list applied to the source list, so the order of the lines in
+  your files does not matter, and the saved result is in that sorted order. The two files you
+  picked are never changed.
 - Numbers are compared by value, so `02847689` matches `2847689`. The saved file keeps the
   source's original spelling (leading zeros stay) and its line-ending style.
-- The result is sorted by numeric value, lowest first. Entries that are not plain numbers
-  (like `H000982`) are kept and listed at the end; they are removed only if the removal file
-  contains exactly the same text.
+- Entries that are not plain numbers (like `H000982`) are kept and listed at the end; they are
+  removed only if the removal file contains exactly the same text. Repeated entries in the
+  source are not merged: a number that appears twice stays twice unless it is in the removal list.
 - After a run, **Show result details** lists what was removed and which removal entries were
   not in the source.
 
