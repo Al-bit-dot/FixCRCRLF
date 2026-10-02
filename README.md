@@ -88,8 +88,9 @@ not need Python or a browser. Download it from the
 
 - **Windows:** `RemoveDupNumbers-windows.zip`. Right-click it, choose **Extract All**, then
   double-click `RemoveDupNumbers.exe`. The first time, Windows may warn about an unrecognised app:
-  click **More info**, then **Run anyway**. One 32-bit program runs on Windows 7 through 11
-  (the Microsoft C runtime that Windows 7 lacks is bundled inside the program). The zip also
+  click **More info**, then **Run anyway**. One 32-bit program runs on Windows 7 through 11: it
+  carries its own Python (3.7, which needs no Windows updates) and the Microsoft C runtime that
+  Windows 7 lacks. The zip also
   holds `remove_dup_numbers.py` and `RemoveDupNumbers.pyw` for a Windows that has Python
   installed (see [Installing Python offline](#installing-python-offline-on-windows)): double-click
   the `.pyw` to open the window without a console.
@@ -108,11 +109,66 @@ It opens at the last source folder used, or `E:\SearchInProgress` on Windows the
 (your home folder on Linux). That folder is kept in `%APPDATA%\RemoveDupNumbers\settings.json`
 on Windows and `~/.config/RemoveDupNumbers/settings.json` on Linux.
 
-It also works from a terminal: `RemoveDupNumbers SOURCE.txt REMOVE.txt`. With Python 3.8 or newer
-installed you can run `python3 remove_dup_numbers.py` directly instead.
+It also works from a terminal: `RemoveDupNumbers SOURCE.txt REMOVE.txt`. With Python 3.4 or newer
+installed you can run `python3 remove_dup_numbers.py` directly instead (`python remove_dup_numbers.py`
+on Windows); it needs nothing outside Python's own library.
 
 GitHub builds both programs on every pull request and publishes them to the `latest` release on
 every change to `main` (see `.github/workflows/build.yml`).
+
+## Installing Python offline on Windows
+
+Python is only needed on Windows to run `remove_dup_numbers.py` itself; `RemoveDupNumbers.exe`
+carries its own. Python's official installers do not need an internet connection, so one file
+downloaded on a connected computer and carried over on a USB stick is enough. Pick one:
+
+| Download on a connected computer | For |
+|---|---|
+| [python-3.8.10.exe](https://www.python.org/ftp/python/3.8.10/python-3.8.10.exe) (32-bit, runs on any Windows) or [python-3.8.10-amd64.exe](https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe) (64-bit Windows only) | Windows 11; Windows 7 SP1 that has update KB2533623 |
+| [python-3.7.6.exe](https://www.python.org/ftp/python/3.7.6/python-3.7.6.exe) or [python-3.7.6-amd64.exe](https://www.python.org/ftp/python/3.7.6/python-3.7.6-amd64.exe) | Windows 7 SP1 without that update (also fine on Windows 11) |
+
+1. Copy the installer over and double-click it. Click **Install Now** (tick **Add Python to PATH**
+   first if you want `python` to work in a command prompt). Nothing is downloaded: the file holds
+   Python, tkinter for the window, and the Microsoft C runtime that Windows 7 lacks, which it
+   installs by itself.
+2. On Windows 7, if the installer stops with *Windows 7 Service Pack 1 and all applicable updates
+   are required*, the computer lacks update KB2533623 (every Python from 3.7.7 on checks for it).
+   Either install that update first (an `.msu` file from the Microsoft Update Catalog; search for
+   KB2533623, or for KB3063858, which replaced it) or use the 3.7.6 installer, which has no such check.
+   Windows 7 without Service Pack 1 cannot install any of them.
+3. Extract `RemoveDupNumbers-windows.zip` and double-click `RemoveDupNumbers.pyw`. It opens the
+   same window as the `.exe`, without a console. The settings file is shared with the `.exe`.
+
+Do not use the *Windows installer (web)* downloads (`...-webinstall.exe`): they fetch everything
+they install from the internet. Do not use the *embeddable package* zips: they have no tkinter.
+Python 3.9 and newer do not install on Windows 7 at all. The site needs no sign-in, and the files
+are the same whether downloaded on Windows or Linux.
+
+## Linux without the packaged program
+
+`install-shortcut.sh` says so when the packaged program cannot start on a computer (it needs the C
+library of Ubuntu 22.04 or newer; Ubuntu 14.10 has an older one) and points the shortcut at
+`remove_dup_numbers.py` run by the system `python3` instead. The script needs only Python 3.4 or
+newer. For the window it uses Python's tkinter when that is installed, and otherwise the desktop's
+own file dialogs (`zenity` on GNOME and Unity, `kdialog` on KDE), which ask for the source file,
+then the to-be-removed file, and show the result. Without either it still works from a terminal:
+`python3 ~/Programs/remove_dup_numbers.py SOURCE.txt REMOVE.txt`.
+
+**Ubuntu 14.10** installs Python 3.4.2 and `zenity` but not tkinter, so the dialogs are used
+unless you add tkinter. For that, download these two packages on a connected computer (they are
+for 64-bit Ubuntu; for 32-bit replace `amd64` with `i386` in both names), copy them over, and
+install both in one command:
+
+```
+https://old-releases.ubuntu.com/ubuntu/pool/main/b/blt/blt_2.5.3-4_amd64.deb
+https://old-releases.ubuntu.com/ubuntu/pool/main/p/python3-stdlib-extensions/python3-tk_3.4.2-1_amd64.deb
+sudo dpkg -i blt_2.5.3-4_amd64.deb python3-tk_3.4.2-1_amd64.deb
+```
+
+**Fedora** (any current release) runs the packaged program as is, so nothing needs installing.
+If you prefer the script there, Fedora Workstation ships `zenity` but not tkinter; on a connected
+Fedora of the same release, `dnf download --resolve python3-tkinter` fetches the `.rpm` files to
+copy over and install with `sudo dnf install ./*.rpm`.
 
 ## Web page
 
