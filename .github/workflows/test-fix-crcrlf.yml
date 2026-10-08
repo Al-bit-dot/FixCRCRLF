@@ -1,0 +1,15 @@
+name: Test fix-crcrlf.sh
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test
+        run: bash test-fix-crcrlf.sh
